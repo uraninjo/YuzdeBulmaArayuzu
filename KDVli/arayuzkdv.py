@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'arayuz.ui'
+# Form implementation generated from reading ui file 'arayuzkdvli.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -9,13 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import decimal
 
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1026, 262)
+        Form.resize(1026, 279)
         self.lineEdit = QtWidgets.QLineEdit(Form)
         self.lineEdit.setGeometry(QtCore.QRect(110, 61, 113, 22))
         self.lineEdit.setText("")
@@ -86,19 +85,48 @@ class Ui_Form(object):
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
         self.lineEdit_13 = QtWidgets.QLineEdit(Form)
-        self.lineEdit_13.setGeometry(QtCore.QRect(310, 190, 113, 22))
+        self.lineEdit_13.setGeometry(QtCore.QRect(300, 170, 113, 22))
         self.lineEdit_13.setText("")
         self.lineEdit_13.setObjectName("lineEdit_13")
         self.label_4 = QtWidgets.QLabel(Form)
-        self.label_4.setGeometry(QtCore.QRect(170, 190, 131, 16))
+        self.label_4.setGeometry(QtCore.QRect(160, 170, 131, 16))
         self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(220, 200, 71, 16))
+        self.label_5.setObjectName("label_5")
+        self.lineEdit_14 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_14.setGeometry(QtCore.QRect(300, 200, 113, 22))
+        self.lineEdit_14.setText("")
+        self.lineEdit_14.setObjectName("lineEdit_14")
+        self.lineEdit_15 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_15.setGeometry(QtCore.QRect(160, 200, 51, 22))
+        self.lineEdit_15.setText("")
+        self.lineEdit_15.setObjectName("lineEdit_15")
+        self.label_6 = QtWidgets.QLabel(Form)
+        self.label_6.setGeometry(QtCore.QRect(120, 200, 31, 16))
+        self.label_6.setObjectName("label_6")
+
+        self.lineEdit_15.setText("%18")
+        self.kdv = self.lineEdit_15.text()
+        self.kdv = int(self.kdv.replace("%", ""))
 
         self.lineEdit.setText("1")
         self.lineEdit_13.setText("1")
 
-        self.lineEdit.textChanged[str].connect(self.onChanged2)
-        self.lineEdit_13.textChanged[str].connect(self.onChanged)
+        self.lineEdit_15.textChanged[str].connect(
+            self.onChanged3
+        )  # Kdvnin değişmesi durumu
+        self.lineEdit.textChanged[str].connect(
+            self.onChanged2
+        )  # Keyfi yüzdenin değişmesi durumu
+        self.lineEdit_13.textChanged[str].connect(
+            self.onChanged
+        )  # Fiyatın Değişmesi durumu
         self.pushButton.clicked.connect(self.reset)
+
+        self.lineEdit_14.setText(
+            "{:.3f}".format((self.kdv / 100 + 1) * (float(self.lineEdit_13.text())))
+        )
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -112,57 +140,76 @@ class Ui_Form(object):
         self.lineEdit_11.setText("")  # 30
         self.lineEdit_12.setText("")  # 25
 
+    def onChanged3(self):
+        try:
+            self.kdv = self.lineEdit_15.text()
+            self.kdv = int(self.kdv.replace("%", ""))
+            self.lineEdit_14.setText(
+                "{:.3f}".format((self.kdv / 100 + 1) * (float(self.lineEdit_13.text())))
+            )
+        except:
+            self.lineEdit_14.setText("Hata Oluştu...")
+
     def onChanged2(self):
         try:
-            self.keyfi = self.lineEdit.text()
 
             self.lineEdit_5.setText(
                 "{:.3f}".format(
-                    (float(self.keyfi) / 100 + 1) * (float(self.lineEdit_13.text()))
+                    (float(self.lineEdit.text()) / 100 + 1)
+                    * (float(self.lineEdit_14.text()))
                 )
             )
         except:
             self.lineEdit_5.setText("Hata Oluştu...")
 
     def onChanged(self):
-        self.keyfi = self.lineEdit.text()
-
-        self.lineEdit_5.setText(
-            "{:.3f}".format(
-                (float(self.keyfi) / 100 + 1) * (float(self.lineEdit_13.text()))
+        try:
+            self.lineEdit_14.setText(
+                "{:.3f}".format((self.kdv / 100 + 1) * (float(self.lineEdit_13.text())))
             )
-        )  # Keyfi
-
+        except:
+            self.lineEdit_14.setText("")
         try:
             self.lineEdit_6.setText(
-                "{:.3f}".format((int(10) / 100 + 1) * (float(self.lineEdit_13.text())))
+                "{:.3f}".format((int(10) / 100 + 1) * (float(self.lineEdit_14.text())))
             )  # 10
         except:
             x = ""
         try:
             self.lineEdit_8.setText(
-                "{:.3f}".format((int(15) / 100 + 1) * (float(self.lineEdit_13.text())))
+                "{:.3f}".format((int(15) / 100 + 1) * (float(self.lineEdit_14.text())))
             )  # 15
         except:
             x = ""
         try:
             self.lineEdit_7.setText(
-                "{:.3f}".format((int(20) / 100 + 1) * (float(self.lineEdit_13.text())))
+                "{:.3f}".format((int(20) / 100 + 1) * (float(self.lineEdit_14.text())))
             )  # 20
         except:
             x = ""
         try:
             self.lineEdit_12.setText(
-                "{:.3f}".format((int(25) / 100 + 1) * (float(self.lineEdit_13.text())))
+                "{:.3f}".format((int(25) / 100 + 1) * (float(self.lineEdit_14.text())))
             )  # 25
         except:
             x = ""
         try:
             self.lineEdit_11.setText(
-                "{:.3f}".format((int(30) / 100 + 1) * (float(self.lineEdit_13.text())))
+                "{:.3f}".format((int(30) / 100 + 1) * (float(self.lineEdit_14.text())))
             )  # 30
         except:
             x = ""
+
+        try:
+            self.lineEdit_5.setText(
+                "{:.3f}".format(
+                    (float(self.lineEdit.text()) / 100 + 1)
+                    * (float(self.lineEdit_14.text()))
+                )
+            )
+
+        except:
+            self.lineEdit_5.setText("")
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -170,13 +217,15 @@ class Ui_Form(object):
         self.lineEdit_2.setText(_translate("Form", "%10"))
         self.lineEdit_3.setText(_translate("Form", "%20"))
         self.lineEdit_4.setText(_translate("Form", "%15"))
-        self.lineEdit_9.setText(_translate("Form", "%30"))
-        self.lineEdit_10.setText(_translate("Form", "%25"))
+        self.lineEdit_9.setText(_translate("Form", "%35"))
+        self.lineEdit_10.setText(_translate("Form", "%30"))
         self.pushButton.setText(_translate("Form", "Sıfırla"))
         self.label.setText(_translate("Form", "Keyfi Yüzde"))
         self.label_2.setText(_translate("Form", "Yüzdeler"))
         self.label_3.setText(_translate("Form", "Yüzdeli Fiyat"))
         self.label_4.setText(_translate("Form", "İşlem Yapılacak Fiyat"))
+        self.label_5.setText(_translate("Form", "KDVli Fiyat"))
+        self.label_6.setText(_translate("Form", "KDV"))
 
 
 if __name__ == "__main__":
